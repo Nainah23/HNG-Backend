@@ -13,6 +13,7 @@ app.get('/api/hello', async (req, res) => {
   } else {
     clientIp = req.connection.remoteAddress;
   }
+  const clientIp = '102.212.239.43';//req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
   try {
     // Get location data based on IP using ipinfo.io
