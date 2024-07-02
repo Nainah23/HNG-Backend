@@ -5,7 +5,7 @@ const port = process.env.PORT || 3000; // Use process.env.PORT for Glitch compat
 
 app.get('/api/hello', async (req, res) => {
   const visitorName = req.query.visitor_name || 'Visitor';
-  const clientIp = '8.8.8.8';//req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  const clientIp = '102.212.239.43';//req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
   try {
     // Get location data based on IP
