@@ -5,17 +5,21 @@ const port = process.env.PORT || 3000; // Use process.env.PORT for Glitch compat
 
 app.get('/api/hello', async (req, res) => {
   const visitorName = req.query.visitor_name || 'Visitor';
-  const clientIp = '102.212.239.43';//req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  let clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+
+  // Extract the first IP address if multiple addresses are present
+  if (clientIp) {
+    clientIp = clientIp.split(',')[0];
+  } else {
+    clientIp = req.connection.remoteAddress;
+  }
 
   try {
-    // Get location data based on IP
-    const locationResponse = await axios.get(`http://ip-api.com/json/${clientIp}`);
+    // Get location data based on IP using ipinfo.io
+    const locationResponse = await axios.get(`https://ipinfo.io/${clientIp}/json`);
     console.log('Location response:', locationResponse.data);
 
-    if (locationResponse.data.status === 'fail') {
-      throw new Error('Invalid query or city not found');
-    }
-
+    // Handle response from ipinfo.io
     const { city } = locationResponse.data;
 
     // Get weather data for the location
@@ -39,4 +43,3 @@ app.get('/api/hello', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-
