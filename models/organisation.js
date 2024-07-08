@@ -3,10 +3,11 @@ const sequelize = require('../config/database');
 
 const Organisation = sequelize.define('Organisation', {
   orgId: {
-    type: DataTypes.STRING,
+    type: DataTypes.UUID,
     primaryKey: true,
     allowNull: false,
-    unique: true
+    unique: true,
+    defaultValue: DataTypes.UUIDV4 // Use UUIDV4 to generate UUIDs automaticall
   },
   name: {
     type: DataTypes.STRING,

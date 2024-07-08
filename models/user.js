@@ -3,9 +3,10 @@ const sequelize = require('../config/database');
 
 const User = sequelize.define('User', {
   userId: {
-    type: DataTypes.STRING,
+    type: DataTypes.UUID,
     allowNull: false,
-    unique: true
+    primaryKey: true,
+    defaultValue: DataTypes.UUIDV4 // Use UUIDV4 to generate UUIDs automatically
   },
   firstName: {
     type: DataTypes.STRING,

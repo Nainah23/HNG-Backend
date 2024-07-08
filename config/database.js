@@ -1,25 +1,15 @@
 const { Sequelize } = require('sequelize');
+require('dotenv').config(); // Ensure environment variables are loaded
 
-let sequelize;
-
-if (process.env.DATABASE_URL) {
-  sequelize = new Sequelize(process.env.DATABASE_URL, {
-    dialect: 'postgres'
-  });
-} else {
-  const config = require('./config.json');
-  const env = process.env.NODE_ENV || 'production';
-
-  sequelize = new Sequelize(
-    config[env].database,
-    config[env].username,
-    config[env].password,
-    {
-      host: config[env].host,
-      dialect: config[env].dialect
-      // Other dialect-specific options can be added here
+// Initialize Sequelize with the connection string from the environment variable
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+  dialect: 'postgres',
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false // Adjust this based on your SSL configuration
     }
-  );
-}
+  }
+});
 
 module.exports = sequelize;
